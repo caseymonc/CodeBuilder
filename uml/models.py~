@@ -1,0 +1,107 @@
+from django.db import models
+
+TYPES = (
+	('I', 'int'),
+	('L', 'long'),
+	('D', 'double'),
+	('F', 'float'),
+	('C', 'char'),
+	('S', 'short'),
+	('B', 'boolean'),
+	('I', 'int'),
+)
+
+NAME_MAX_LENGTH = 200
+
+# Create your models here.
+class Class(models.Model):
+	class_name = models.CharField(max_length=NAME_MAX_LENGTH)
+	class_extends = models.ForeignKey('self', blank=True, null=True)
+	class_package = models.ForeignKey('Package')
+	class_implemets = models.ManyToManyField('Interface', blank=True, null=True)
+
+	def __unicode__(self):
+		return self.class_name
+	
+
+class Modifier(models.Model):
+	modifier_class = models.ForeignKey('Class', blank=True, null=True)
+	modifier_member = models.ForeignKey('Member', blank=True, null=True)
+	modifier_method = models.ForeignKey('Method', blank=True, null=True)
+	modifier_parameter = models.ForeignKey('Parameter', blank=True, null=True)
+	modifier_interface = models.ForeignKey('Interface', blank=True, null=True)
+
+	MODIFIERS = (
+        ('PR', 'private'),
+        ('PU', 'public'),
+        ('PO', 'protected'),
+		('FI', 'final'),
+		('ST', 'static'),
+		('AB', 'abstract'),
+    )
+
+	modifier_modifier = models.CharField(max_length=3, choices=MODIFIERS)
+
+	def __unicode__(self):
+		return self.modifier_modifier
+	
+
+class Member(models.Model):
+	member_class = models.ForeignKey('Class')
+	member_variable = models.ForeignKey('Variable')
+
+	def __unicode__(self):
+		return self.member_variable.variable_name
+
+class Parameter(models.Model):
+	parameter_method = models.ForeignKey('Method')
+	parameter_variable = models.ForeignKey('Variable')
+
+	def __unicode__(self):
+		return self.parameter_variable.variable_name
+	
+
+class Method(models.Model):
+	method_class = models.ForeignKey('Class', blank=True, null=True)
+	method_interface = models.ForeignKey('Interface', blank=True, null=True)
+	method_name = models.CharField(max_length=NAME_MAX_LENGTH)
+	method_returnType = models.ForeignKey('ReturnType', null=True, blank=True)
+
+	def __unicode__(self):
+		return self.method_name
+
+class Interface(models.Model):
+	interface_name = models.CharField(max_length=NAME_MAX_LENGTH)
+	interface_extends = models.ForeignKey('self', blank=True, null=True)
+	def __unicode__(self):
+		return self.interface_name
+
+class Variable(models.Model):
+	variable_class = models.ForeignKey('Class', blank=True, null=True)
+	variable_name = models.CharField(max_length=NAME_MAX_LENGTH)
+	variable_type = models.CharField(max_length=2, choices=TYPES, blank=True, null=True)
+	variable_isArray = models.BooleanField()
+
+	def __unicode__(self):
+		return self.variable_name
+
+class ReturnType(models.Model):
+	return_type_class = models.ForeignKey('Class', blank=True, null=True)
+	return_type_type = models.CharField(max_length=2, choices=TYPES, blank=True, null=True)
+
+	def __unicode__(self):
+		if(self._class != None):
+			return self.return_type_class.class_name
+		else:
+			return self.return_type_type
+
+class Package(models.Model):
+	package_isPrivate = models.BooleanField()
+	package_name = models.CharField(max_length=NAME_MAX_LENGTH)
+	package_package = models.ForeignKey('self', blank=True, null=True)
+
+	def __unicode__(self):
+		if(self.package_package == None):
+			return self.package_name
+		else:
+			return unicode(self.package_package) + '.' + self.package_name

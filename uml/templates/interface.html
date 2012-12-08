@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" href="javascript/libs/themes/SimpleBlue.min.css" />
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile.structure-1.2.0.min.css" />
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+
+<title>Interface</title>
+</head>
+
+<body>
+    <!-- Start of 6th page -->
+    <div data-role="page" id="interface">
+    
+        <div data-role="header">
+	      <a href="" onclick="javascript:saveInterface({{ interface.id }})" data-icon="check" class="ui-btn-right" data-theme="c">Save</a>
+		  <a href="" onclick="javascript:deleteInterface({{ interface.id }})" data-icon="delete" class="ui-btn-left" data-theme="c">Delete</a>
+          <h1>{{ interface.name }}</h1>
+          
+        </div><!-- /header -->
+        
+        <div data-role="content"> 
+            <div id="details" style="padding-left:15%; padding-right:15%; padding-top:2%; padding-bottom:2%">
+                <h3>Interface Name</h3>
+                <input id="interfaceName" name="interfaceName" type="text" title="Interface Name" value="{{ interface.name }}"/>
+                <script type="text/javascript"> 
+                $$hint($('#interfaceName')); 
+                </script>
+				</br>
+				{% if interfaces %}
+    			<h3>Extends</h3>
+    			<select name="extends" id="extends">
+					<option value="">None</option>
+				{% for inter in interfaces %}
+					{% if interface.id != inter.id %}						
+						<option value="{{ inter.id }}" {% if interface.interface_extends and inter.id == interface.interface_extends.id %}selected="selected" {% endif %}>{{ inter.interface_name }}</option>
+					{% endif %}
+					
+				{% endfor %}
+				</select>
+				{% endif %}
+           	</div>
+            
+            <div id="methods" class="invisibleFragment">
+            	<ul data-role="listview">
+                    {% for method in interface.methods %}
+                    <li><a href="/method/{{ method.id }}">{{ method.access }} {{ method.type }} {{ method.name }}()</a></li>
+					{% endfor %}
+                </ul>
+            </div>
+            
+        </div><!-- /content -->
+    
+    	<div data-role="footer" data-id="foo1" data-position="fixed">
+            <div data-role="navbar">
+                <ul>
+                	<li><a href="#" onclick="showFragment('#details')" class="ui-btn-active ui-state-persist">Interface Details</a></li>
+                    <li><a href="#" onclick="showFragment('#methods')">Methods</a></li>
+                </ul>
+                <script type="text/javascript">
+					showFragment('#details');
+				</script>
+            </div><!-- /navbar -->
+        </div><!-- /footer -->
+    	
+    </div><!-- /page -->
+	
+</body>
+</html>

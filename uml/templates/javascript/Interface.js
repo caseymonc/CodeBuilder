@@ -1,0 +1,32 @@
+var saveInterface = function(interface_id){	
+	var extend = $('#extends option:selected').val();
+	
+	json = {'interface_id' : interface_id, 
+			'interface_name' : $('#interfaceName').val()};
+	if(extend != '' && extend != undefined)
+		json.interface_extends = extend;
+	if(interface_id == -1)
+		interface_id = 'new';
+	$.post('/api/interface/' + interface_id + '/', json, function(data){
+			if(interface_id != 'new')
+				$('#interface-' + interface_id).text($('#interfaceName').val())
+			else{
+				$('#interfaces').append('<li><a href="interface/'+ data.interface_id +'" data-transition="fade" data-panel="main" id="interface-'+ data.interface_id +'">'+ data.interface_name +'</a></li>');
+				$('#interfaces').listview('refresh');
+				$.mobile.changePage( "/model/interface/" + data.interface_id + "/", {
+                	panel: "main"
+                });
+			}
+	});
+}
+
+var deleteInterface = function(interface_id){
+	$.ajax({
+    url: '/api/interface/' + interface_id + '/',
+    type: 'DELETE',
+    success: function(result) {
+        $('#interface-' + interface_id).remove();
+		$('#interfaces').listview('refresh');
+		$.mobile.changePage( "/model/", {panel: "main"});
+    }
+});}

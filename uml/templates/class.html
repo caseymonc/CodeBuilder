@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" href="/media/javascript/libs/themes/SimpleBlue.min.css" />
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile.structure-1.2.0.min.css" />
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+
+<title>Main</title>
+</head>
+
+<body>
+    <!-- Start of 6th page -->
+    <div data-role="page" id="class">
+    	<input id="class_id" type="hidden" value="{{ class.id }}"/>
+        <div data-role="header">
+	      <a href="" onclick="javascript:saveClass({{ class.id }})" data-icon="check" class="ui-btn-right" data-theme="c">Save</a>
+		  <a href="" onclick="javascript:deleteClass({{ class.id }})" data-icon="delete" class="ui-btn-left" data-theme="c">Delete</a>
+          <h1>{{ class.class_name }}</h1>
+          
+        </div><!-- /header -->
+        
+        <div data-role="content"> 
+            <div id="details" style="padding-left:15%; padding-right:15%; padding-top:2%; padding-bottom:2%">
+                <input id="className" name="className" type="text" title="Class Name" value="{{ class.class_name }}"/>
+                <script type="text/javascript"> 
+                $$hint($('#className')); 
+                </script>
+    			
+                <h3>Visibility</h3>
+                <fieldset data-role="controlgroup">
+                        <label for="radio-choice-21">
+                            <input type="radio" name="access" id="public" value="PU" {% if 'PU' in class.modifiers %}checked="checked" {% endif %}/>
+                            Public
+                        </label>
+            
+                        <label for="radio-choice-22">
+                            <input type="radio" name="access" id="default" value="" {% if not 'PU' in class.modifiers %}checked="checked" {% endif %}/>
+                            Default
+                        </label>
+                </fieldset>
+
+                <h3>Modifiers</h3>
+                <fieldset data-role="controlgroup">
+                    <label><input type="checkbox" id="abstract" name="isAbstract" value="AB" {% if 'AB' in class.modifiers %}checked="checked" {% endif %}/> Is Abstract </label>
+                    <label><input type="checkbox" id="final" name="isFinal" value="FI" {% if 'FI' in class.modifiers %}checked="checked" {% endif %}/> Is Final </label>
+                </fieldset>
+                
+                
+           	</div> 
+            
+            <div id="relationships" class="invisibleFragment" style="padding-left:15%; padding-right:15%; padding-top:2%; padding-bottom:2%">
+            	<h3>Extends</h3>
+                <select name="extends" id="extends">
+				   <option value="">None</option>
+				   {% for type in class_types %}
+					{% if type.typeId != class.id %}
+						<option value="{{ type.id }}" {% if type.typeId == class.extends.id %}selected="selected"{% endif %}>{{ type.name }}</option>{% endif %}
+				   {% endfor %}
+				</select>
+                <h3>Implements</h3>
+				{% if interfaces %}
+				<select data-native-menu="false" name="implements" id="implements" multiple="multiple">
+					<option value="" data-placeholder="true">None</option>
+				{% for interface in interfaces %}
+					<option value="{{ interface.id }}" {% if interface in class.implements %}selected="selected"{% endif %}>{{ interface.interface_name }}</option>
+				{% endfor %}
+				</select>
+				{% endif %}
+            </div>
+            
+            <div id="methods" class="invisibleFragment">
+            	<ul data-role="listview">
+					<li data-icon="plus"><a href="/model/class/{{ class.id }}/method/new/">Add a method</a></li>
+					{% for method in class.methods %}
+                    <li data-icon="false"><a href="/model/class/{{ class.id }}/method/{{ method.id }}/">{{ method.access }} {{ method.type }} {{ method.name }}()</a></li>
+					{% endfor %}
+                </ul>
+            </div>
+            
+            <div id="members" class="invisibleFragment">
+            	<ul data-role="listview">
+					<li data-icon="plus"><a href="/model/class/{{ class.id }}/member/new/">Add a member variable</a></li>
+					{% for member in class.members %}
+                    <li data-icon="false"><a href="/model/class/{{ class.id }}/member/{{ member.id }}/">{{ member.type }} {{ member.name }}</a></li>
+					{% endfor %}
+                </ul>
+            </div>
+            
+        </div><!-- /content -->
+    
+    	<div data-role="footer" data-id="foo1" data-position="fixed">
+            <div data-role="navbar">
+                <ul>
+                	<li><a href="#" onclick="showFragment('#details')" class="ui-btn-active ui-state-persist">Class Details</a></li>
+                    <li><a href="#" onclick="showFragment('#relationships')">Class Relationships</a></li>
+                    <li><a href="#" onclick="showFragment('#methods')">Methods</a></li>
+                    <li><a href="#" onclick="showFragment('#members')">Members</a></li>
+                </ul>
+                <script type="text/javascript">
+					showFragment('#details');
+				</script>
+            </div><!-- /navbar -->
+        </div><!-- /footer -->
+    	
+    </div><!-- /page -->
+	
+</body>
+</html>

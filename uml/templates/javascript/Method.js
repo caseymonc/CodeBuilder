@@ -1,0 +1,27 @@
+var saveMethod = function(method_id, class_id){	
+
+	json = {'class_id' : class_id, 
+			'method_name' : $('#methodName').val(),
+			'access' : $('input[name=access]:checked').val(),
+			'abstract' : $('#abstract').is(':checked') ? 1 : 0,
+			'final' : $('#final').is(':checked') ? 1 : 0,
+			'return' : $('#returnType option:selected').val()};
+	if(method_id == -1)
+		method_id = 'new';
+	$.post('/api/class/' + class_id + '/method/' + method_id + '/', json, function(data){
+			$.mobile.changePage( "/model/class/" + class_id + "/", {
+            	panel: "main"
+            });
+	});
+}
+
+var deleteMethod = function(method_id, class_id){
+	$.ajax({
+    url: '/api/class/' + class_id + '/method/' + method_id + '/',
+    type: 'DELETE',
+    success: function(result) {
+        $.mobile.changePage( "/model/class/" + class_id + "/", {
+            	panel: "main"
+            });
+    }
+});}

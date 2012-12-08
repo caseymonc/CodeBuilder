@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="width=device-width, minimum-scale=1, maximum-scale=1" name="viewport">
+<link href="/media/css/Dark.css" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile.structure-1.2.0.min.css" /> 
+  <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script> 
+  <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script> 
+<link href="/media/css/login.css" rel="stylesheet"/>
+<script src="/media/javascript/Fragment.js"></script>
+<link href="/media/css/fragment.css" rel="stylesheet"/>
+<title>Login</title>
+</head>
+
+<body>
+    <!-- Start of 6th page -->
+    <div data-role="page" id="interface">
+    	<div data-role="header"> 
+			<h1>Login</h1> 
+		</div> 
+        <div class="content"> 
+            <div id="details" style="padding-left:15%; padding-right:15%; padding-top:2%; padding-bottom:2%">
+				<form data-ajax="false" action="/model/login/login/" method="post">                
+				<h4>Username</h4>
+                <input id="username" name="username" type="text" value=""/>
+
+				
+    			<h4>Password</h4>
+    			<input id="password" name="password" type="password" value=""/>
+				</br>
+				<input type="submit" value="Login" />
+				</form>
+           	</div>
+			<div id="register" class="invisibleFragment" style="padding-left:15%; padding-right:15%; padding-top:2%; padding-bottom:2%">
+				<form data-ajax="false" action="/model/login/register/" method="post">                
+				<h4>Username</h4>
+                <input id="username" name="username" type="text" value=""/>
+				
+				<h4>Email</h4>
+                <input id="email" name="email" type="email" value=""/>
+				
+    			<h4>Password</h4>
+    			<input id="password" name="password" type="password" value=""/>
+				</br>
+				<input type="submit" value="Register" />
+				</form>
+           	</div>
+        </div><!-- /content -->
+    
+    	<div data-role="footer" data-position="fixed" data-id="ew-footer">
+      		<div data-role="navbar"><ul>
+                <li><a href="" onclick="showFragment('#login')" class="ui-btn-active ui-state-persist">Login</a></li>
+				<li><a href="" onclick="showFragment('#register')" class="ui-btn-active ui-state-persist">Register</a></li>
+            </ul>
+			<script type="text/javascript">
+				showFragment('#login');
+			</script>
+			</div>
+      	</div><!-- /footer -->
+    </div><!-- /page -->
+	
+</body>
+</html>

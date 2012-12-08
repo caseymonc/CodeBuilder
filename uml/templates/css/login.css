@@ -1,0 +1,14 @@
+@charset "utf-8";
+/* CSS Document */
+.content{
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:10%;
+	width:40%;
+	height:40%
+}
+
+h4{
+	margin-bottom:0px;
+	padding-bottom:0px;
+}

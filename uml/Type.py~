@@ -1,0 +1,29 @@
+from uml.models import Class
+
+def getBasicTypes():
+	types = []
+	types.append({'id' : 'basic:int', 'name' : 'int'})
+	types.append({'id' : 'basic:long', 'name' : 'long'})
+	types.append({'id' : 'basic:float', 'name' : 'float'})
+	types.append({'id' : 'basic:double', 'name' : 'double'})
+	types.append({'id' : 'basic:short', 'name' : 'short'})
+	types.append({'id' : 'basic:char', 'name' : 'char'})
+	types.append({'id' : 'basic:byte', 'name' : 'byte'})
+	types.append({'id' : 'basic:boolean', 'name' : 'boolean'})
+	return types
+
+def getDataStructureTypes():
+	types = []
+	types.append({'id' : 'data:map', 'name' : 'Map'})
+	types.append({'id' : 'data:set', 'name' : 'Set'})
+	types.append({'id' : 'data:list', 'name' : 'List'})
+	types.append({'id' : 'data:stack', 'name' : 'Stack'})
+	types.append({'id' : 'data:queue', 'name' : 'Queue'})
+	return types
+
+def getClassTypes():
+	classes = Class.objects.all()
+	types = []
+	for c in classes:
+		types.append({'id' : 'class:' + str(c.id), 'name' : c.class_name})
+	return types
